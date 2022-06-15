@@ -18,5 +18,13 @@ public class Square : MonoBehaviour
         mBoardPosition = position;
         mRectTransform = GetComponent<RectTransform>();
         thisBoard = newBoard;
+    } 
+    
+    public void RemovePiece()
+    {
+        if (piece != null)
+        {
+            piece.Kill();
+        }
     }
 }

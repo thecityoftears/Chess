@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Board;
 
 public abstract class Piece : EventTrigger
 {
@@ -16,6 +17,8 @@ public abstract class Piece : EventTrigger
 
     protected Vector3Int movement = Vector3Int.one;
     protected List<Square> mHighlightedSquares = new List<Square>();
+
+    protected Square targetSquare = null;
 
     public virtual void Setup(Color pieceColor, Color32 spriteColor, PieceController newPieceController)
     {
@@ -45,7 +48,18 @@ public abstract class Piece : EventTrigger
             currentX += x;
             currentY += y;
 
-            mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+            SquareState squareState = SquareState.None;
+            squareState = currentSquare.thisBoard.ValidateSquare(currentX, currentY, this);
+
+            if (squareState == SquareState.Hostile)
+            {
+                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+            }
+
+            if (squareState == SquareState.Free)
+            {
+                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+            }
         }
     }
 
@@ -91,11 +105,52 @@ public abstract class Piece : EventTrigger
     {
         base.OnDrag(eventData);
         transform.position += (Vector3)eventData.delta;
+
+        foreach (Square square in mHighlightedSquares)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(square.mRectTransform, Input.mousePosition))
+            {
+                targetSquare = square;
+                break;
+            }
+            targetSquare = null;
+        }
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
         ClearSquares();
+
+        if (!targetSquare)
+        {
+            transform.position = currentSquare.gameObject.transform.position;
+        }
+
+        Move();
+
+        pieceController.SwitchSides(color);
+    }
+
+    public void Reset()
+    {
+        Kill();
+        Place(originalSquare);
+    }
+
+    public virtual void Kill()
+    {
+        currentSquare.piece = null;
+        gameObject.SetActive(false);
+    }
+
+    protected virtual void Move()
+    {
+        targetSquare.RemovePiece();
+        currentSquare.piece = null;
+        currentSquare = targetSquare;
+        currentSquare.piece = this;
+        transform.position = currentSquare.transform.position;
+        targetSquare = null;
     }
 }

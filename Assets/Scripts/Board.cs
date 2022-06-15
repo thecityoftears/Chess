@@ -8,6 +8,11 @@ public class Board : MonoBehaviour
     public GameObject squarePrefab;
     public Square[,] allSquares = new Square[8,8];
 
+    public enum SquareState
+    {
+        None, Friendly, Hostile, Free, OutOfBounds
+    }
+
     public void Create()
     {
         for (int x = 0; x < 8; x++)
@@ -44,5 +49,29 @@ public class Board : MonoBehaviour
 
             prevBlack = !prevBlack;
         }
+    }
+
+    public SquareState ValidateSquare(int x, int y, Piece checkingPiece)
+    {
+        if (x < 0 || x > 7 || y < 0 || y > 7)
+        {
+            return SquareState.OutOfBounds;
+        }
+
+        Square target = allSquares[x, y];
+
+        if (target.piece != null)
+        {
+            if (checkingPiece.color == target.piece.color)
+            {
+                return SquareState.Friendly;
+            }
+            else
+            {
+                return SquareState.Hostile;
+            }
+        }
+
+        return SquareState.Free;
     }
 }

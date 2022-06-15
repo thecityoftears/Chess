@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PieceController : MonoBehaviour
 {
+    public bool kingsAlive = true;
+
     public GameObject piecePrefab;
 
     private List<Piece> whitePieces = null;
@@ -33,6 +35,8 @@ public class PieceController : MonoBehaviour
 
         PlacePieces(1, 0, whitePieces, board);
         PlacePieces(6, 7, blackPieces, board);
+
+        SwitchSides(Color.black);
     }
 
     private List<Piece> CreatePieces(Color color, Color32 spriteColor, Board board)
@@ -65,6 +69,43 @@ public class PieceController : MonoBehaviour
         {
             pieces[i].Place(board.allSquares[i, pawnRow]);
             pieces[i + 8].Place(board.allSquares[i, royalRow]);
+        }
+    }
+
+    private void SetInteractive(List<Piece> allPieces, bool value)
+    {
+        foreach(Piece piece in allPieces)
+        {
+            piece.enabled = value;
+        }
+    }
+
+    public void SwitchSides(Color color)
+    {
+        if (!kingsAlive)
+        {
+            ResetPieces();
+
+            kingsAlive = true;
+
+            color = Color.black;
+        }
+
+        bool isBlackTurn = color == Color.white ? true : false;
+
+        SetInteractive(whitePieces, !isBlackTurn);
+        SetInteractive(blackPieces, isBlackTurn);
+    }
+
+    public void ResetPieces()
+    {
+        foreach (Piece piece in blackPieces)
+        {
+            piece.Reset();
+        }
+        foreach (Piece piece in whitePieces)
+        {
+            piece.Reset();
         }
     }
 }
