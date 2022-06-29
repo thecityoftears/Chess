@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Square : MonoBehaviour
 {
-    public string coordinate;
     public Vector2Int mBoardPosition = Vector2Int.zero;
     public Image outlineImage;
     public Piece piece;

@@ -346,21 +346,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Pieces
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Pieces
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\andys\OneDrive\Documents\GitHub\Chess
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 545e0000
-    m_LastClickedID: 24148
+    m_SelectedIDs: 485e0000
+    m_LastClickedID: 24136
     m_ExpandedIDs: 00000000e85d0000ea5d0000505e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -517,7 +517,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 8e5d0000
       m_LastClickedID: 0
       m_ExpandedIDs: 28fbffff
       m_RenameOverlay:
@@ -834,9 +834,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -8.471994, y: 35.1657, z: -0.2117806}
+    m_Target: {x: -6.0471296, y: 0.0891754, z: 0.4749119}
     speed: 2
-    m_Value: {x: -8.471994, y: 35.1657, z: -0.2117806}
+    m_Value: {x: -6.0471296, y: 0.0891754, z: 0.4749119}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -886,9 +886,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 79.64468
+    m_Target: 10.975423
     speed: 2
-    m_Value: 79.64468
+    m_Value: 10.975423
   m_Ortho:
     m_Target: 1
     speed: 2

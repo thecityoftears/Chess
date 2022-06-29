@@ -8,6 +8,7 @@ public class Pawn : Piece
 {
     //finish this
     public bool justDoubleMoved = false;
+    private bool enPassant = false;
 
     public override void Setup(Color pieceColor, PieceController newPieceController, Sprite pieceImage)
     {
@@ -19,12 +20,34 @@ public class Pawn : Piece
     protected override void Move()
     {
         pieceController.UpdateMovedPawns(color);
+
+        if (targetSquare.piece == null && targetSquare.file != currentSquare.file)
+        {
+            enPassant = true;
+        }
         targetSquare.RemovePiece();
+
+        // removing special en passant pawn
+        if (enPassant)
+        {
+            if (color == Color.black)
+            {
+                targetSquare.thisBoard.allSquares[targetSquare.mBoardPosition.x, targetSquare.mBoardPosition.y + 1].RemovePiece();
+            }
+            else
+            {
+                targetSquare.thisBoard.allSquares[targetSquare.mBoardPosition.x, targetSquare.mBoardPosition.y - 1].RemovePiece();
+            }
+            enPassant = false;
+        }
         currentSquare.piece = null;
+
+        // setting double move in case of moving 2 squares
         if (Math.Abs(targetSquare.rank - currentSquare.rank) == 2)
         {
             justDoubleMoved = true;
         }
+
         currentSquare = targetSquare;
         currentSquare.piece = this;
         transform.position = currentSquare.transform.position;
@@ -61,6 +84,7 @@ public class Pawn : Piece
             SquareState squareState = SquareState.None;
             squareState = currentSquare.thisBoard.ValidateSquare(currentX, currentY, this);
 
+            // only allow the pawn to capture pieces in diagonal movement
             if (squareState == SquareState.Hostile)
             {
                 if (x != 0)
@@ -70,11 +94,41 @@ public class Pawn : Piece
                 break;
             }
 
+            // in the case that the square is free, only allow the pawn to move there if it is a regular forward move or en passant
             if (squareState == SquareState.Free)
             {
                 if (x == 0)
                 {
                     mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                }
+                else
+                {
+                    if (color == Color.black)
+                    {
+                        if (currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece != null)
+                        {
+                            if (typeof(Pawn) == currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece.GetType())
+                            {
+                                if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece).justDoubleMoved)
+                                {
+                                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece != null)
+                        {
+                            if (typeof(Pawn) == currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece.GetType())
+                            {
+                                if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece).justDoubleMoved)
+                                {
+                                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
