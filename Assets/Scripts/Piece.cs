@@ -20,12 +20,12 @@ public abstract class Piece : EventTrigger
 
     protected Square targetSquare = null;
 
-    public virtual void Setup(Color pieceColor, Color32 spriteColor, PieceController newPieceController)
+    public virtual void Setup(Color pieceColor, PieceController newPieceController, Sprite pieceImage)
     {
         pieceController = newPieceController;
         color = pieceColor;
-        GetComponent<Image>().color = spriteColor;
         mRectTransform = GetComponent<RectTransform>();
+        GetComponent<Image>().sprite = pieceImage;
     }
 
     public void Place(Square square)
@@ -38,7 +38,7 @@ public abstract class Piece : EventTrigger
         gameObject.SetActive(true);
     }
 
-    private void CreateSquarePath(int x, int y, int movement)
+    protected virtual void CreateSquarePath(int x, int y, int movement)
     {
         int currentX = currentSquare.mBoardPosition.x;
         int currentY = currentSquare.mBoardPosition.y;
@@ -54,11 +54,17 @@ public abstract class Piece : EventTrigger
             if (squareState == SquareState.Hostile)
             {
                 mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                break;
             }
 
             if (squareState == SquareState.Free)
             {
                 mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+            }
+
+            if (squareState == SquareState.Friendly)
+            {
+                break;
             }
         }
     }
@@ -152,5 +158,6 @@ public abstract class Piece : EventTrigger
         currentSquare.piece = this;
         transform.position = currentSquare.transform.position;
         targetSquare = null;
+        pieceController.UpdateMovedPawns(color);
     }
 }

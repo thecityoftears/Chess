@@ -42,6 +42,9 @@ public class PieceController : MonoBehaviour
     private List<Piece> CreatePieces(Color color, Color32 spriteColor, Board board)
     {
         List<Piece> pieces = new List<Piece>();
+        Sprite[] pieceImages = Resources.LoadAll<Sprite>("SpriteSheets/kindpng_355936");
+        int pieceNum;
+        //Texture2D texture;
 
         for (int i = 0; i < pieceOrder.Length; i++)
         {
@@ -50,14 +53,47 @@ public class PieceController : MonoBehaviour
 
             newPieceObject.transform.localScale = new Vector3(1, 1, 1);
             newPieceObject.transform.localRotation = Quaternion.identity;
+            //texture = Resources.Load<Texture2D>("SpriteSheets/Kindpng_355936_5");
+            //pieceImage = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
             string key = pieceOrder[i];
             Type pieceType = pieceDict[key];
 
+            //choosing the index for the sprite sheet
+            if (pieceType == typeof(Pawn))
+            {
+                pieceNum = 5;
+            }
+            else if (pieceType == typeof(Knight))
+            {
+                pieceNum = 3;
+            }
+            else if (pieceType == typeof(Bishop))
+            {
+                pieceNum = 2;
+            }
+            else if (pieceType == typeof(Rook))
+            {
+                pieceNum = 4;
+            }
+            else if (pieceType == typeof(Queen))
+            {
+                pieceNum = 1;
+            }
+            else
+            {
+                pieceNum = 0;
+            }
+
+            if (color == Color.black)
+            {
+                pieceNum += 6;
+            }
+
             Piece newPiece = (Piece)newPieceObject.AddComponent(pieceType);
             pieces.Add(newPiece);
 
-            newPiece.Setup(color, spriteColor, this);
+            newPiece.Setup(color, this, pieceImages[pieceNum]);
         }
 
         return pieces;
@@ -106,6 +142,29 @@ public class PieceController : MonoBehaviour
         foreach (Piece piece in whitePieces)
         {
             piece.Reset();
+        }
+    }
+
+    public void UpdateMovedPawns(Color color)
+    {
+        if (color == Color.black)
+        {
+            foreach (Piece piece in blackPieces)
+            {
+                if (typeof(Pawn) == piece.GetType()){
+                    ((Pawn)piece).justDoubleMoved = false;
+                }
+            }
+        }
+        else
+        {
+            foreach (Piece piece in whitePieces)
+            {
+                if (typeof(Pawn) == piece.GetType())
+                {
+                    ((Pawn)piece).justDoubleMoved = false;
+                }
+            }
         }
     }
 }

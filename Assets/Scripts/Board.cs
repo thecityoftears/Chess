@@ -8,6 +8,18 @@ public class Board : MonoBehaviour
     public GameObject squarePrefab;
     public Square[,] allSquares = new Square[8,8];
 
+    public Dictionary<int, string> squaresDictionary = new Dictionary<int, string>()
+    {
+        {0, "a" },
+        {1, "b" },
+        {2, "c" },
+        {3, "d" },
+        {4, "e" },
+        {5, "f" },
+        {6, "g" },
+        {7, "h" },
+    };
+
     public enum SquareState
     {
         None, Friendly, Hostile, Free, OutOfBounds
@@ -37,12 +49,12 @@ public class Board : MonoBehaviour
             {
                 if (prevBlack)
                 {
-                    allSquares[x, y].GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                    allSquares[x, y].GetComponent<Image>().color = new Color32(129, 84, 56, 255);
                     prevBlack = false;
                 }
                 else
                 {
-                    allSquares[x, y].GetComponent<Image>().color = new Color32(0, 0, 0, 255);
+                    allSquares[x, y].GetComponent<Image>().color = new Color32(248, 223, 161, 255);
                     prevBlack = true;
                 }
             }
