@@ -10,7 +10,7 @@ public abstract class Piece : EventTrigger
     public Color color = Color.clear;
 
     protected Square originalSquare = null;
-    protected Square currentSquare = null;
+    public Square currentSquare = null;
 
     protected RectTransform mRectTransform = null;
     protected PieceController pieceController;
