@@ -56,12 +56,18 @@ public class Knight : Piece
     {
         if (squareState == SquareState.Hostile)
         {
-            mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[x, y]);
+            if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[x, y], this, color))
+            {
+                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[x, y]);
+            }
         }
 
         if (squareState == SquareState.Free)
         {
-            mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[x, y]);
+            if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[x, y], this, color))
+            {
+                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[x, y]);
+            }
         }
 
         if (squareState == SquareState.Friendly)

@@ -8,7 +8,7 @@ public class King : Piece
     public bool hasMoved = false;
    public bool IsInCheck()
     {
-        return true;
+        return pieceController.SquareUnderAttack(currentSquare, color);
     }
     protected override void CreateSquarePath(int x, int y, int movement)
     {
@@ -23,7 +23,10 @@ public class King : Piece
                 if (currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 3, currentSquare.mBoardPosition[1]].piece.GetType() == typeof(Rook))
                 {
                     if (((Rook)currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 3, currentSquare.mBoardPosition[1]].piece).hasMoved == false) {
-                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 2, currentSquare.mBoardPosition[1]]);
+                        if (!pieceController.SquareUnderAttack(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 2, currentSquare.mBoardPosition[1]], this.color) && !pieceController.SquareUnderAttack(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 1, currentSquare.mBoardPosition[1]], this.color) && !IsInCheck())
+                        {
+                            mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] + 2, currentSquare.mBoardPosition[1]]);
+                        }
                     }
                 }
             }
@@ -35,7 +38,10 @@ public class King : Piece
                 {
                     if (((Rook)currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] - 4, currentSquare.mBoardPosition[1]].piece).hasMoved == false)
                     {
-                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] - 2, currentSquare.mBoardPosition[1]]);
+                        if (!pieceController.SquareUnderAttack(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] - 2, currentSquare.mBoardPosition[1]], this.color) && !pieceController.SquareUnderAttack(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] - 1, currentSquare.mBoardPosition[1]], this.color) && !IsInCheck())
+                        {
+                            mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentSquare.mBoardPosition[0] - 2, currentSquare.mBoardPosition[1]]);
+                        }
                     }
                 }
             }

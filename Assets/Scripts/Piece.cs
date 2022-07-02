@@ -53,13 +53,19 @@ public abstract class Piece : EventTrigger
 
             if (squareState == SquareState.Hostile)
             {
-                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                {
+                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                }
                 break;
             }
 
             if (squareState == SquareState.Free)
             {
-                mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                {
+                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                }
             }
 
             if (squareState == SquareState.Friendly)

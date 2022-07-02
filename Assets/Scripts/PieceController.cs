@@ -167,4 +167,378 @@ public class PieceController : MonoBehaviour
             }
         }
     }
+
+    public bool CheckLegalMove(Square originalSquare, Square newSquare, Piece piece, Color color)
+    {
+        // set piece locations in potential move, and then see if the king is in check
+        bool legality = true;
+        Piece tempPiece = newSquare.piece;
+        newSquare.piece = piece;
+        originalSquare.piece = null;
+        piece.currentSquare = newSquare;
+
+        if (color == Color.black)
+        {
+            foreach (Piece blackPiece in blackPieces)
+            {
+                if (typeof(King) == blackPiece.GetType())
+                {
+                    legality = !((King)blackPiece).IsInCheck();
+                }
+            }
+        }
+        else
+        {
+            foreach (Piece whitePiece in whitePieces)
+            {
+                if (typeof(King) == whitePiece.GetType())
+                {
+                    legality = !((King)whitePiece).IsInCheck();
+                }
+            }
+        }
+
+        newSquare.piece = tempPiece;
+        originalSquare.piece = piece;
+        piece.currentSquare = originalSquare;
+        return legality;
+    }
+
+    public bool SquareUnderAttack(Square square, Color color)
+    {
+        int x = square.mBoardPosition[0];
+        int y = square.mBoardPosition[1];
+        // check right
+        for (int i = 1; i <= 7; i++)
+        {
+            if (x + i > 7)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x + i, y].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + i, y].piece.GetType() == typeof(Rook) && square.thisBoard.allSquares[x + i, y].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x + i, y].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x + i, y].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        //check left
+        for (int i = 1; i <= 7; i++)
+        {
+            if (x - i < 0)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x - i, y].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - i, y].piece.GetType() == typeof(Rook) && square.thisBoard.allSquares[x - i, y].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x - i, y].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x - i, y].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        //check up
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y + i > 7)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x, y + i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x, y + i].piece.GetType() == typeof(Rook) && square.thisBoard.allSquares[x, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x, y + i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x, y + i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x, y + i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        // check down
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y - i < 0)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x, y - i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x, y - i].piece.GetType() == typeof(Rook) && square.thisBoard.allSquares[x, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x, y - i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x, y - i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x, y - i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        // check diagonals
+
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y + i > 7 || x + i > 7)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x + i, y + i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + i, y + i].piece.GetType() == typeof(Bishop) && square.thisBoard.allSquares[x + i, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y + i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x + i, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y + i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x + i, y + i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y + i].piece.GetType() == typeof(Pawn) && square.thisBoard.allSquares[x + i, y + i].piece.color != color && i == 1 && color == Color.white)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y - i < 0 || x + i > 7)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x + i, y - i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + i, y - i].piece.GetType() == typeof(Bishop) && square.thisBoard.allSquares[x + i, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y - i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x + i, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y - i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x + i, y - i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x + i, y - i].piece.GetType() == typeof(Pawn) && square.thisBoard.allSquares[x + i, y - i].piece.color != color && i == 1 && color == Color.black)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y + i > 7 || x - i < 0)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x - i, y + i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - i, y + i].piece.GetType() == typeof(Bishop) && square.thisBoard.allSquares[x - i, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y + i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x - i, y + i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y + i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x - i, y + i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y + i].piece.GetType() == typeof(Pawn) && square.thisBoard.allSquares[x - i, y + i].piece.color != color && i == 1 && color == Color.white)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        for (int i = 1; i <= 7; i++)
+        {
+            if (y - i < 0 || x - i < 0)
+            {
+                break;
+            }
+            if (square.thisBoard.allSquares[x - i, y - i].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - i, y - i].piece.GetType() == typeof(Bishop) && square.thisBoard.allSquares[x - i, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y - i].piece.GetType() == typeof(Queen) && square.thisBoard.allSquares[x - i, y - i].piece.color != color)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y - i].piece.GetType() == typeof(King) && square.thisBoard.allSquares[x - i, y - i].piece.color != color && i == 1)
+                {
+                    return true;
+                }
+
+                if (square.thisBoard.allSquares[x - i, y - i].piece.GetType() == typeof(Pawn) && square.thisBoard.allSquares[x - i, y - i].piece.color != color && i == 1 && color == Color.black)
+                {
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        // check knights
+        if (x + 2 <= 7 && y + 1 <= 7)
+        {
+            if (square.thisBoard.allSquares[x + 2, y + 1].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + 2, y + 1].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x + 2, y + 1].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x + 2 <= 7 && y - 1 >= 0)
+        {
+            if (square.thisBoard.allSquares[x + 2, y - 1].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + 2, y - 1].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x + 2, y - 1].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x - 2 >= 0 && y + 1 <= 7)
+        {
+            if (square.thisBoard.allSquares[x - 2, y + 1].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - 2, y + 1].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x - 2, y + 1].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x - 2 >= 0 && y - 1 >= 0)
+        {
+            if (square.thisBoard.allSquares[x - 2, y - 1].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - 2, y - 1].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x - 2, y - 1].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x + 1 <= 7 && y + 2 <= 7)
+        {
+            if (square.thisBoard.allSquares[x + 1, y + 2].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + 1, y + 2].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x + 1, y + 2].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x - 1 >= 0 && y + 2 <= 7)
+        {
+            if (square.thisBoard.allSquares[x - 1, y + 2].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - 1, y + 2].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x - 1, y + 2].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x + 1 <= 7 && y - 2 >= 0)
+        {
+            if (square.thisBoard.allSquares[x + 1, y - 2].piece != null)
+            {
+                if (square.thisBoard.allSquares[x + 1, y - 2].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x + 1, y - 2].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (x - 1 >= 0 && y - 2 >= 0)
+        {
+            if (square.thisBoard.allSquares[x - 1, y - 2].piece != null)
+            {
+                if (square.thisBoard.allSquares[x - 1, y - 2].piece.GetType() == typeof(Knight) && square.thisBoard.allSquares[x - 1, y - 2].piece.color != color)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

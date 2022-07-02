@@ -89,7 +89,10 @@ public class Pawn : Piece
             {
                 if (x != 0)
                 {
-                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                    {
+                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                    }
                 }
                 break;
             }
@@ -99,7 +102,10 @@ public class Pawn : Piece
             {
                 if (x == 0)
                 {
-                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                    {
+                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                    }
                 }
                 else
                 {
@@ -111,7 +117,10 @@ public class Pawn : Piece
                             {
                                 if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece).justDoubleMoved)
                                 {
-                                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                                    {
+                                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                    }
                                 }
                             }
                         }
@@ -124,7 +133,10 @@ public class Pawn : Piece
                             {
                                 if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece).justDoubleMoved)
                                 {
-                                    mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                                    {
+                                        mHighlightedSquares.Add(currentSquare.thisBoard.allSquares[currentX, currentY]);
+                                    }
                                 }
                             }
                         }
