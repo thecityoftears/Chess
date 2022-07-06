@@ -10,5 +10,4 @@ public class Bishop : Piece
 
         movement = new Vector3Int(0, 0, 7);
     }
-
 }

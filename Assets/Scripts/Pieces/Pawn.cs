@@ -2,18 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Board;
 
 public class Pawn : Piece
 {
-    //finish this
     public bool justDoubleMoved = false;
     private bool enPassant = false;
 
     public override void Setup(Color pieceColor, PieceController newPieceController, Sprite pieceImage)
     {
         base.Setup(pieceColor, newPieceController, pieceImage);
-
         movement = new Vector3Int(0, 2, 1);
     }
 

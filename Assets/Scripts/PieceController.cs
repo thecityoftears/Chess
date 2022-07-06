@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PieceController : MonoBehaviour
 {
+    public Image whitePromoter;
+    public Image blackPromoter;
+
     public bool kingsAlive = true;
 
     public GameObject piecePrefab;
