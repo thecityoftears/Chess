@@ -361,6 +361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PieceController
       objectReference: {fileID: 0}
+    - target: {fileID: 7343282212826667127, guid: 6d5dc1115dd38504c8f51cde38bbb55a, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d5dc1115dd38504c8f51cde38bbb55a, type: 3}
@@ -463,7 +467,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 408349544}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: queen
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &408349544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,8 +830,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 226213377}
   - {fileID: 1149498862}
+  - {fileID: 226213377}
   - {fileID: 1704184053}
   - {fileID: 2125814298}
   m_Father: {fileID: 0}
@@ -1179,7 +1195,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 960436066}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: knight
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &960436066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,7 +1464,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1045676143}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: rook
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1045676143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,7 +1598,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1046226377}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: bishop
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1046226377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1931,7 +1983,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1562381387}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: bishop
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1562381387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2053,7 +2117,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1653956714}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: rook
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1653956714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2401,7 +2477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1704184054
@@ -2525,7 +2601,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2050326969}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: knight
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2050326969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,7 +2735,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2070696770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 226213378}
+        m_TargetAssemblyTypeName: PieceController, Assembly-CSharp
+        m_MethodName: SetPromotionType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: queen
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2070696770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,7 +2836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2125814299

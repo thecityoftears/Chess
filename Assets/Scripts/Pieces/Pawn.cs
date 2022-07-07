@@ -52,6 +52,10 @@ public class Pawn : Piece
         transform.position = currentSquare.transform.position;
         targetSquare = null;
         movement = new Vector3Int(0, 1, 1);
+        if (AtEndOfBoard())
+        {
+            pieceController.PawnPromoter(color, currentSquare);
+        }
     }
 
     protected override void CheckSquarePathing()
@@ -148,5 +152,24 @@ public class Pawn : Piece
                 break;
             }
         }
+    }
+
+    private bool AtEndOfBoard()
+    {
+        if (color == Color.black)
+        {
+            if (currentSquare.rank == 1)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (currentSquare.rank == 8)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
