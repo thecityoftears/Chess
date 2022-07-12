@@ -81,4 +81,10 @@ public class King : Piece
         pieceController.UpdateMovedPawns(color);
         hasMoved = true;
     }
+
+    public override void Kill()
+    {
+        base.Kill();
+        hasMoved = false;
+    }
 }

@@ -196,6 +196,9 @@ public class PieceController : MonoBehaviour
         {
             piece.Reset();
         }
+
+        SetInteractive(whitePieces, true);
+        SetInteractive(blackPieces, false);
     }
 
     public void UpdateMovedPawns(Color color)

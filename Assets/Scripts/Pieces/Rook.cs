@@ -17,4 +17,10 @@ public class Rook : Piece
         base.Move();
         hasMoved = true;
     }
+
+    public override void Kill()
+    {
+        base.Kill();
+        hasMoved = false;
+    }
 }

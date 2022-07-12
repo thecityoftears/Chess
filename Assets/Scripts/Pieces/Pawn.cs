@@ -172,4 +172,12 @@ public class Pawn : Piece
         }
         return false;
     }
+
+    public override void Kill()
+    {
+        base.Kill();
+        justDoubleMoved = false;
+        movement = new Vector3Int(0, 2, 1);
+        enPassant = false;
+    }
 }
