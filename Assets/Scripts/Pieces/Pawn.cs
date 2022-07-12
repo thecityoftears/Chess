@@ -58,6 +58,110 @@ public class Pawn : Piece
         }
     }
 
+    public override bool HasLegalMoves()
+    {
+        if (originalSquare.rank == 2)
+        {
+            if (
+            CheckLegalMoves(0, 1, movement.y)
+            ||CheckLegalMoves(1, 1, movement.z)
+            ||CheckLegalMoves(-1, 1, movement.z)
+            )
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (
+            CheckLegalMoves(0, -1, movement.y)
+            || CheckLegalMoves(1, -1, movement.z)
+            || CheckLegalMoves(-1, -1, movement.z)
+            )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected override bool CheckLegalMoves(int x, int y, int movement)
+    {
+        int currentX = currentSquare.mBoardPosition.x;
+        int currentY = currentSquare.mBoardPosition.y;
+
+        for (int i = 1; i <= movement; i++)
+        {
+            currentX += x;
+            currentY += y;
+
+            SquareState squareState = SquareState.None;
+            squareState = currentSquare.thisBoard.ValidateSquare(currentX, currentY, this);
+
+            // only allow the pawn to capture pieces in diagonal movement
+            if (squareState == SquareState.Hostile)
+            {
+                if (x != 0)
+                {
+                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                    {
+                        return true;
+                    }
+                }
+                break;
+            }
+
+            // in the case that the square is free, only allow the pawn to move there if it is a regular forward move or en passant
+            if (squareState == SquareState.Free)
+            {
+                if (x == 0)
+                {
+                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (color == Color.black)
+                    {
+                        if (currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece != null)
+                        {
+                            if (typeof(Pawn) == currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece.GetType())
+                            {
+                                if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY + 1].piece).justDoubleMoved)
+                                {
+                                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece != null)
+                        {
+                            if (typeof(Pawn) == currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece.GetType())
+                            {
+                                if (((Pawn)currentSquare.thisBoard.allSquares[currentX, currentY - 1].piece).justDoubleMoved)
+                                {
+                                    if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     protected override void CheckSquarePathing()
     {
         if (originalSquare.rank == 2)

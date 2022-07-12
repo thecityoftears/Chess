@@ -9,14 +9,16 @@ public class PieceController : MonoBehaviour
     public Image whitePromoter;
     public Image blackPromoter;
 
-    public bool kingsAlive = true;
-
     public GameObject piecePrefab;
 
     private List<Piece> whitePieces = null;
     private List<Piece> blackPieces = null;
+    private List<Piece> whitePiecesToRemove = new List<Piece>();
+    private List<Piece> blackPiecesToRemove = new List<Piece>();
 
     private Type promotionType = null;
+
+    private GameController gameController;
 
     private string[] pieceOrder = new string[16]
     {
@@ -34,7 +36,7 @@ public class PieceController : MonoBehaviour
         {"R", typeof(Rook) },
     };
 
-    public void Setup(Board board)
+    public void Setup(Board board, GameController controller)
     {
         whitePieces = CreatePieces(Color.white, board);
         blackPieces = CreatePieces(Color.black, board);
@@ -43,6 +45,8 @@ public class PieceController : MonoBehaviour
         PlacePieces(6, 7, blackPieces, board);
 
         SwitchSides(Color.black);
+
+        gameController = controller;
     }
 
     private List<Piece> CreatePieces(Color color, Board board)
@@ -59,8 +63,6 @@ public class PieceController : MonoBehaviour
 
             newPieceObject.transform.localScale = new Vector3(1, 1, 1);
             newPieceObject.transform.localRotation = Quaternion.identity;
-            //texture = Resources.Load<Texture2D>("SpriteSheets/Kindpng_355936_5");
-            //pieceImage = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
             string key = pieceOrder[i];
             Type pieceType = pieceDict[key];
@@ -148,6 +150,7 @@ public class PieceController : MonoBehaviour
 
         Piece newPiece = (Piece)newPieceObject.AddComponent(pieceType);
         newPiece.Setup(color, this, pieceImages[pieceNum]);
+        newPiece.extra = true;
 
         return newPiece;
     }
@@ -171,34 +174,103 @@ public class PieceController : MonoBehaviour
 
     public void SwitchSides(Color color)
     {
-        if (!kingsAlive)
-        {
-            ResetPieces();
-
-            kingsAlive = true;
-
-            color = Color.black;
-        }
-
         bool isBlackTurn = color == Color.white ? true : false;
 
         SetInteractive(whitePieces, !isBlackTurn);
         SetInteractive(blackPieces, isBlackTurn);
     }
 
+    // iterate through the pieces to see if there is a legal move available
+    public void CheckEndOfGame(Color color)
+    {
+        bool kingCheckmated = false;
+        if (color == Color.black)
+        {
+            foreach (Piece piece in whitePieces)
+            {
+                if (piece.active)
+                {
+                    if (piece.HasLegalMoves())
+                    {
+                        return;
+                    }
+                }
+                if (typeof(King) == piece.GetType())
+                {
+                    kingCheckmated = ((King)piece).IsInCheck();
+                }
+            }
+        }
+        else
+        {
+            foreach (Piece piece in blackPieces)
+            {
+                if (piece.active)
+                {
+                    if (piece.HasLegalMoves())
+                    {
+                        return;
+                    }
+                }
+                if (typeof(King) == piece.GetType())
+                {
+                    kingCheckmated = ((King)piece).IsInCheck();
+                }
+            }
+        }
+        // handle the case that the king is checkmated
+        if (kingCheckmated)
+        {
+            gameController.EndOfGame("checkmate", color);
+        }
+        // handle the stalemate case
+        else
+        {
+            gameController.EndOfGame("stalemate", color);
+        }
+    }
+
     public void ResetPieces()
     {
         foreach (Piece piece in blackPieces)
         {
-            piece.Reset();
+            if (piece.extra)
+            {
+                piece.Kill();
+                blackPiecesToRemove.Add(piece);
+            }
+            else
+            {
+                piece.Reset();
+            }
         }
         foreach (Piece piece in whitePieces)
         {
-            piece.Reset();
+            if (piece.extra)
+            {
+                piece.Kill();
+                whitePiecesToRemove.Add(piece);
+            }
+            else
+            {
+                piece.Reset();
+            }
         }
+
+        foreach(Piece piece in blackPiecesToRemove)
+        {
+            blackPieces.Remove(piece);
+        }
+        foreach (Piece piece in whitePiecesToRemove)
+        {
+            whitePieces.Remove(piece);
+        }
+        blackPiecesToRemove.Clear();
+        whitePiecesToRemove.Clear();
 
         SetInteractive(whitePieces, true);
         SetInteractive(blackPieces, false);
+        gameController.DisableEndOfGame();
     }
 
     public void UpdateMovedPawns(Color color)

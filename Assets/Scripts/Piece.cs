@@ -7,7 +7,9 @@ using static Board;
 
 public abstract class Piece : EventTrigger
 {
+    public bool active = true;
     public Color color = Color.clear;
+    public bool extra = false;
 
     protected Square originalSquare = null;
     public Square currentSquare = null;
@@ -89,6 +91,63 @@ public abstract class Piece : EventTrigger
         CreateSquarePath(-1, -1, movement.z);
     }
 
+    // these two functions calculate checkmate/stalemate
+    // iterate through all of the pieces of the current player, if there are no legal moves, decide if it is a checkmate or a stalemate
+    public virtual bool HasLegalMoves()
+    {
+        if (CheckLegalMoves(1, 0, movement.x)
+            || CheckLegalMoves(-1, 0, movement.x)
+            || CheckLegalMoves(0, 1, movement.y)
+            || CheckLegalMoves(0, -1, movement.y)
+            || CheckLegalMoves(1, 1, movement.z)
+            || CheckLegalMoves(-1, 1, movement.z)
+            || CheckLegalMoves(1, -1, movement.z)
+            || CheckLegalMoves(-1, -1, movement.z))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected virtual bool CheckLegalMoves(int x, int y, int movement)
+    {
+        int currentX = currentSquare.mBoardPosition.x;
+        int currentY = currentSquare.mBoardPosition.y;
+
+        for (int i = 1; i <= movement; i++)
+        {
+            currentX += x;
+            currentY += y;
+
+            SquareState squareState = SquareState.None;
+            squareState = currentSquare.thisBoard.ValidateSquare(currentX, currentY, this);
+
+            if (squareState == SquareState.Hostile)
+            {
+                if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                {
+                    return true;
+                }
+                break;
+            }
+
+            if (squareState == SquareState.Free)
+            {
+                if (pieceController.CheckLegalMove(currentSquare, currentSquare.thisBoard.allSquares[currentX, currentY], this, color))
+                {
+                    return true;
+                }
+            }
+
+            if (squareState == SquareState.Friendly)
+            {
+                break;
+            }
+        }
+
+        return false;
+    }
+
     protected void ShowSquares()
     {
         foreach (Square square in mHighlightedSquares)
@@ -142,16 +201,19 @@ public abstract class Piece : EventTrigger
         Move();
 
         pieceController.SwitchSides(color);
+        pieceController.CheckEndOfGame(color);
     }
 
     public void Reset()
     {
         Kill();
         Place(originalSquare);
+        active = true;
     }
 
     public virtual void Kill()
     {
+        active = false;
         currentSquare.piece = null;
         gameObject.SetActive(false);
     }
