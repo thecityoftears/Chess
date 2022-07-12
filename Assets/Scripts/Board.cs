@@ -7,6 +7,7 @@ public class Board : MonoBehaviour
 {
     public GameObject squarePrefab;
     public Square[,] allSquares = new Square[8,8];
+    private string orientation = "white";
 
     public Dictionary<int, string> squaresDictionary = new Dictionary<int, string>()
     {
@@ -85,5 +86,33 @@ public class Board : MonoBehaviour
         }
 
         return SquareState.Free;
+    }
+
+    public void Rotate()
+    {
+        if (orientation == "black")
+        {
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    allSquares[x, y].gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(x * 100 + 50, y * 100 + 50);
+                }
+            }
+
+            orientation = "white";
+        }
+        else
+        {
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    allSquares[x, y].gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2((7 - x) * 100 + 50, (7 - y) * 100 + 50);
+                }
+            }
+
+            orientation = "black";
+        }
     }
 }

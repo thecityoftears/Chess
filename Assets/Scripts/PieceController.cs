@@ -748,4 +748,17 @@ public class PieceController : MonoBehaviour
 
         SwitchSides(color);
     }
+
+    // for rotation
+    public void ReloadPieces()
+    {
+        foreach (Piece piece in whitePieces)
+        {
+            piece.transform.position = piece.currentSquare.transform.position;
+        }
+        foreach (Piece piece in blackPieces)
+        {
+            piece.transform.position = piece.currentSquare.transform.position;
+        }
+    }
 }
